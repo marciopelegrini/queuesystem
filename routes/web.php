@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 // Guest routes
@@ -15,6 +14,6 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/', function(){
         echo "Home Page";
     });
-    
+
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
