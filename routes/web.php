@@ -13,5 +13,11 @@ Route::middleware(['guest'])->group(function () {
 //Auth routes
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [MainController::class, 'index'])->name('home');
+
+    //Change password
+    Route::get('/change-password', [AuthController::class, 'changePassword'])->name('change.password');
+    Route::post('/change-password', [AuthController::class, 'changePasswordSubmit'])->name('change.password.submit');
+
+    //Logout
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
