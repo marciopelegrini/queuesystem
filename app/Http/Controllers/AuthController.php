@@ -19,12 +19,12 @@ class AuthController extends Controller
             'username' => 'required|email',
             'password' => 'required|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,16}$/'
         ],
-        [
-            'username.required' => 'O usuario é obrigatorio',
-            'username.email'=> 'o usuario deve ser um email valido',
-            'password.required' => 'A senha é obrigatoria',
-            'password.regex'=> 'A senha deve ter entre 6 e 16 caracteres, ter uma maiuscula e uma minuscula',
-        ]);
+            [
+                'username.required' => 'O usuario é obrigatorio',
+                'username.email' => 'o usuario deve ser um email valido',
+                'password.required' => 'A senha é obrigatoria',
+                'password.regex' => 'A senha deve ter entre 6 e 16 caracteres, ter uma maiuscula e uma minuscula',
+            ]);
 
         $user = User::where('email', trim($request->username))
             ->where('active', true)
@@ -37,7 +37,7 @@ class AuthController extends Controller
             //Login sucessful
             $this->loginUser($user);
             return redirect()->route('home');
-        } else{
+        } else {
             //Login failled
             return redirect()->back()->withInput()->with('server_error', 'Login invalido');
         }

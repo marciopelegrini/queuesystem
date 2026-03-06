@@ -1,5 +1,4 @@
 <div class="flex justify-between items-center bg-zinc-900 text-white p-4">
-
     <div class="flex items-center">
         <a href="#">
             <div class="flex items-center">
