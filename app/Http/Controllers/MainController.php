@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Queue;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class MainController extends Controller
 {
@@ -18,7 +19,7 @@ class MainController extends Controller
             'queues' => $queues
         ];
 
-        return view('home', $data);
+        return view('main.home', $data);
     }
 
     private function getQueuesList()
@@ -26,8 +27,6 @@ class MainController extends Controller
         $companyId = Auth::user()->id_company;
 
         return Queue::where('id_company', $companyId)
-            ->where('status', 'active')
-            ->whereNull('deleted_at')
             ->withCount([
                 'tickets as total_tickets' => function ($query) {
                     $query->whereNotNull('queue_ticket_status')
@@ -51,5 +50,35 @@ class MainController extends Controller
                 },
             ])
             ->get();
+    }
+
+    public function queueDetails($id)
+    {
+        // try to decrypt the id
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (\Exception $e) {
+            abort(403, 'ID de fila inválido');
+        }
+
+        // check if the queue exists and belongs to the authenticated user's company
+        $queue = Queue::where('id', $id)
+            ->where('id_company', Auth::user()->id_company)
+            ->firstOrFail();
+
+        if(!$queue) {
+            abort(404, 'Fila não encontrada');
+        }
+
+        // get the tickets from the queue
+        $tickets = $queue->tickets()->get();
+
+        $data = [
+            'subtitle' => 'Detalhes',
+            'queue' => $queue,
+            'tickets' => $tickets
+        ];
+
+        return view('main.queue_details', $data);
     }
 }
