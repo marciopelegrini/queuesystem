@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Queue;
+use App\Models\QueueTicket;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
@@ -12,11 +13,11 @@ class MainController extends Controller
     public function index()
     {
         // get list of active queues for the authenticated user's company
-        $queues = $this->getQueuesList();
-
         $data = [
             'subtitle' => 'Home',
-            'queues' => $queues
+            'queues' => $this->getQueuesList(),
+            'companyName' => Auth::user()->company->company_name,
+            'companyTotal' => $this->getCompanyTotals()
         ];
 
         return view('main.home', $data);
@@ -28,28 +29,48 @@ class MainController extends Controller
 
         return Queue::where('id_company', $companyId)
             ->withCount([
-                'tickets as total_tickets' => function ($query) {
+                'tickets as total_tickets' => function($query) {
                     $query->whereNotNull('queue_ticket_status')
                         ->whereNull('deleted_at');
                 },
-                'tickets as total_dismissed' => function ($query) {
+                'tickets as total_dismissed' => function($query) {
                     $query->where('queue_ticket_status', 'dismissed')
                         ->whereNull('deleted_at');
                 },
-                'tickets as total_not_attended' => function ($query) {
+                'tickets as total_not_attended' => function($query) {
                     $query->where('queue_ticket_status', 'not_attended')
                         ->whereNull('deleted_at');
                 },
-                'tickets as total_called' => function ($query) {
+                'tickets as total_called' => function($query) {
                     $query->where('queue_ticket_status', 'called')
                         ->whereNull('deleted_at');
                 },
-                'tickets as total_waiting' => function ($query) {
+                'tickets as total_waiting' => function($query) {
                     $query->where('queue_ticket_status', 'waiting')
                         ->whereNull('deleted_at');
                 },
             ])
             ->get();
+    }
+
+    private function getCompanyTotals()
+    {
+        $companyId = Auth::user()->id_company;
+        $totalQueues = Queue::where('id_company', $companyId)->count();
+
+        // get all tickets of the company
+        $tickets = QueueTicket::whereHas('queue', function($query) use ($companyId){
+            $query->where('id_company', $companyId);
+        })->get();
+
+        return [
+            'total_queues' => $totalQueues,
+            'total_tickets' => $tickets->count(),
+            'total_dismissed' => $tickets->where('queue_ticket_status', 'dismissed')->count(),
+            'total_not_attended' => $tickets->where('queue_ticket_status', 'not_attended')->count(),
+            'total_called' => $tickets->where('queue_ticket_status', 'called')->count(),
+            'total_waiting' => $tickets->where('queue_ticket_status', 'waiting')->count(),
+        ];
     }
 
     public function queueDetails($id)
@@ -64,6 +85,28 @@ class MainController extends Controller
         // check if the queue exists and belongs to the authenticated user's company
         $queue = Queue::where('id', $id)
             ->where('id_company', Auth::user()->id_company)
+            ->withCount([
+                'tickets as total_tickets' => function($query){
+                    $query->whereNotNull('queue_ticket_status')
+                        ->whereNull('deleted_at');
+                },
+                'tickets as total_dismissed' => function($query){
+                    $query->where('queue_ticket_status', 'dismissed')
+                        ->whereNull('deleted_at');
+                },
+                'tickets as total_not_attended' => function($query){
+                    $query->where('queue_ticket_status', 'not_attended')
+                        ->whereNull('deleted_at');
+                },
+                'tickets as total_called' => function($query){
+                    $query->where('queue_ticket_status', 'called')
+                        ->whereNull('deleted_at');
+                },
+                'tickets as total_waiting' => function($query){
+                    $query->where('queue_ticket_status', 'waiting')
+                        ->whereNull('deleted_at');
+                },
+            ])
             ->firstOrFail();
 
         if(!$queue) {
