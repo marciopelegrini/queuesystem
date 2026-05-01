@@ -16,7 +16,7 @@
         <hr class="my-4">
 
         <div class="mb-4">
-            <a href="#" class="btn"><i class="far fa-plus me-2"></i>Criar nova fila...</a>
+            <a href="{{ route('queue.create') }}" class="btn"><i class="far fa-plus me-2"></i>Criar nova fila...</a>
         </div>
 
         @if($queues->count() === 0 )
