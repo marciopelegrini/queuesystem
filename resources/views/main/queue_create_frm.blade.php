@@ -4,7 +4,7 @@
 
         <div class="flex justify-between items-center">
             <p class="title-2">Criar nova fila de espera</p>
-            <a href="#" class="btn"><i class="fa-solid fa-arrow-left me-2"></i>Voltar</a>
+            <a href="{{ route('home') }}" class="btn"><i class="fa-solid fa-arrow-left me-2"></i>Voltar</a>
         </div>
 
         <hr class="my-4">
@@ -21,27 +21,31 @@
 
                     <div class="mb-4">
                         <label for="name" class="label">Nome da fila</label>
-                        <input type="text" name="name" id="name" class="input w-full" placeholder="Nome da fila" value="{{ old('name') }}">
+                        <input type="text" name="name" id="name" class="input w-full"
+                            placeholder="Nome da fila" value="{{ old('name') }}">
                         {!! showValidationError('name', $errors) !!}
                         {!! showServerError() !!}
                     </div>
 
                     <div class="mb-4">
                         <label for="description" class="label">Descrição</label>
-                        <input type="text" name="description" id="description" class="input w-full" placeholder="Descrição da fila" value="{{ old('description') }}">
+                        <input type="text" name="description" id="description" class="input w-full"
+                            placeholder="Descrição da fila" value="{{ old('description') }}">
                         {!! showValidationError('description', $errors) !!}
                     </div>
 
                     <div class="flex gap-4 mb-4">
                         <div class="w-1/2">
                             <label for="service" class="label">Serviço</label>
-                            <input type="text" name="service" id="service" class="input w-full" placeholder="Serviço" value="{{ old('service') }}">
+                            <input type="text" name="service" id="service" class="input w-full"
+                                placeholder="Serviço" value="{{ old('service') }}">
                             {!! showValidationError('service', $errors) !!}
                         </div>
 
                         <div class="w-1/2">
                             <label for="desk" class="label">Balcão de atendimento</label>
-                            <input type="text" name="desk" id="desk" class="input w-full" placeholder="Balcão de atendimento" value="{{ old('desk') }}">
+                            <input type="text" name="desk" id="desk" class="input w-full"
+                                placeholder="Balcão de atendimento" value="{{ old('desk') }}">
                             {!! showValidationError('desk', $errors) !!}
                         </div>
                     </div>
@@ -55,8 +59,9 @@
                                 @php
                                     $profixes = str_split('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
                                 @endphp
-                                @foreach($profixes as $prefix)
-                                    <option value="{{ $prefix }}" {{ $prefix === 'A' ? 'selected' : '' }}>{{ $prefix }}</option>
+                                @foreach ($profixes as $prefix)
+                                    <option value="{{ $prefix }}" {{ $prefix === 'A' ? 'selected' : '' }}>
+                                        {{ $prefix }}</option>
                                 @endforeach
                             </select>
                             {!! showValidationError('prefix', $errors) !!}
@@ -87,7 +92,8 @@
                         <p class="label">Código de hash</p>
                         <div class="flex gap-2">
                             <p class="input bg-slate-100 w-full" id="hash_code">&nbsp;</p>
-                            <button type="button" class="btn" id="btn_hash_code"><i class="fa-solid fa-rotate"></i></button>
+                            <button type="button" class="btn" id="btn_hash_code"><i
+                                    class="fa-solid fa-rotate"></i></button>
                         </div>
                         {!! showValidationError('hidden_hash_code', $errors) !!}
                     </div>
@@ -97,12 +103,14 @@
                         <div class="w-1/2">
                             <div class="mb-4">
                                 <label class="label">Prefixo - Cor de fundo</label>
-                                <input type="text" class="input text-zinc-900" name="color_1" id="color_1" value="#0d3561">
+                                <input type="text" class="input text-zinc-900" name="color_1" id="color_1"
+                                    value="#0d3561">
                                 {!! showValidationError('color_1', $errors) !!}
                             </div>
                             <div>
                                 <label class="label">Prefixo - Cor do texto</label>
-                                <input type="text" class="input text-zinc-900" name="color_2" id="color_2" value="#ffffff">
+                                <input type="text" class="input text-zinc-900" name="color_2" id="color_2"
+                                    value="#ffffff">
                                 {!! showValidationError('color_2', $errors) !!}
                             </div>
                         </div>
@@ -110,19 +118,22 @@
                         <div class="w-1/2">
                             <div class="mb-4">
                                 <label class="label">Número - Cor de fundo</label>
-                                <input type="text" class="input text-zinc-900" name="color_3" id="color_3" value="#adb4b9">
+                                <input type="text" class="input text-zinc-900" name="color_3" id="color_3"
+                                    value="#adb4b9">
                                 {!! showValidationError('color_3', $errors) !!}
                             </div>
                             <div>
                                 <label class="label">Número - Cor do texto</label>
-                                <input type="text" class="input text-zinc-900" name="color_4" id="color_4" value="#011020">
+                                <input type="text" class="input text-zinc-900" name="color_4" id="color_4"
+                                    value="#011020">
                                 {!! showValidationError('color_4', $errors) !!}
                             </div>
                         </div>
 
                     </div>
 
-                    <button type="submit" class="btn"><i class="fa-solid fa-check me-2"></i>Criar nova fila</button>
+                    <button type="submit" class="btn"><i class="fa-solid fa-check me-2"></i>Criar nova
+                        fila</button>
 
                 </form>
 
@@ -130,8 +141,10 @@
 
             <div class="flex w-1/2 justify-center items-center">
                 <div id="color_preview" class="flex main-card !bg-slate-200">
-                    <p id="example_prefix" class="rounded-tl-2xl rounded-bl-2xl text-center text-9xl font-bold p-6" style="background-color: #0d3561; color: #ffffff;">A</p>
-                    <p id="example_number" class="rounded-tr-2xl rounded-br-2xl text-center text-9xl font-bold p-6" style="background-color: #adb4b9; color: #011020;">01</p>
+                    <p id="example_prefix" class="rounded-tl-2xl rounded-bl-2xl text-center text-9xl font-bold p-6"
+                        style="background-color: #0d3561; color: #ffffff;">A</p>
+                    <p id="example_number" class="rounded-tr-2xl rounded-br-2xl text-center text-9xl font-bold p-6"
+                        style="background-color: #adb4b9; color: #011020;">01</p>
                 </div>
             </div>
 
@@ -140,7 +153,6 @@
     </div>
 
     <script>
-
         // add coloris to all color inputs
         const fixedColors = [
             '#ff0000',
@@ -157,10 +169,30 @@
             '#ffffff',
         ];
 
-        Coloris({ el: '#color_1', alpha: false, swatches: fixedColors, defaultColor: '#0d3561' });
-        Coloris({ el: '#color_2', alpha: false, swatches: fixedColors, defaultColor: '#ffffff' });
-        Coloris({ el: '#color_3', alpha: false, swatches: fixedColors, defaultColor: '#adb4b9' });
-        Coloris({ el: '#color_4', alpha: false, swatches: fixedColors, defaultColor: '#011020' });
+        Coloris({
+            el: '#color_1',
+            alpha: false,
+            swatches: fixedColors,
+            defaultColor: '#0d3561'
+        });
+        Coloris({
+            el: '#color_2',
+            alpha: false,
+            swatches: fixedColors,
+            defaultColor: '#ffffff'
+        });
+        Coloris({
+            el: '#color_3',
+            alpha: false,
+            swatches: fixedColors,
+            defaultColor: '#adb4b9'
+        });
+        Coloris({
+            el: '#color_4',
+            alpha: false,
+            swatches: fixedColors,
+            defaultColor: '#011020'
+        });
 
         // inputs
         const prefix = document.querySelector("#prefix");
@@ -187,7 +219,7 @@
             };
 
             // update prefix
-            if(ticketProperties.hasPrefix) {
+            if (ticketProperties.hasPrefix) {
                 example_prefix.textContent = ticketProperties.prefix;
                 example_prefix.style.backgroundColor = ticketProperties.prefixBackgroundColor;
                 example_prefix.style.color = ticketProperties.prefixTextColor;
@@ -209,7 +241,7 @@
         color3.addEventListener('change', updateTicketPreview);
         color4.addEventListener('change', updateTicketPreview);
 
-        function getHashCode(){
+        function getHashCode() {
             fetch("{{ route('queue.generate.hash') }}")
                 .then(response => response.json())
                 .then(data => {
@@ -225,7 +257,6 @@
 
         // refresh hash code on button click
         document.querySelector("#btn_hash_code").addEventListener('click', getHashCode);
-
     </script>
 
 </x-layouts.auth-layout>
