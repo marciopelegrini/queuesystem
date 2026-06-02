@@ -229,7 +229,6 @@ class MainController extends Controller
 
         // store the new queue in the database
         $newQueue->save();
-
         return redirect()->route('home');
     }
 
